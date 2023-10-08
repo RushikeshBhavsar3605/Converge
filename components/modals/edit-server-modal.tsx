@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useModal } from "@/hooks/use-modal-store";
 import { useEffect } from "react";
+import { editServer } from "@/lib/actions/user.actions";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -62,7 +63,11 @@ export const EditServerModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/servers/${server?.id}`, values);
+      await editServer({
+        name: values.name,
+        imageUrl: values.imageUrl,
+        serverId: server?.id as string,
+      });
 
       form.reset();
       router.refresh();

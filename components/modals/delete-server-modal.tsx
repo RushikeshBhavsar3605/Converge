@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { deleteServer } from "@/lib/actions/user.actions";
 
 export const DeleteServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -27,7 +28,9 @@ export const DeleteServerModal = () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/servers/${server?.id}`);
+      await deleteServer({
+        serverId: server?.id as string,
+      });
 
       onClose();
       router.refresh();

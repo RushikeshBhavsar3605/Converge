@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { createServer } from "@/lib/actions/user.actions";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -55,7 +56,11 @@ export const InitialModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      await createServer({
+        name: values.name,
+        imageUrl: values.imageUrl,
+      });
+
       form.reset();
       router.refresh();
       window.location.reload();
