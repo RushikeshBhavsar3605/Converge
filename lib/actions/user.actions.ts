@@ -22,6 +22,11 @@ interface changeRoleProps {
   role: MemberRole;
 }
 
+interface kickUserProps {
+  serverId: string;
+  memberId: string;
+}
+
 export async function createServer({ name, imageUrl }: createServerProps) {
   try {
     const profile = await currentProfile();
@@ -273,5 +278,55 @@ export async function changeRole({
   } catch (error: any) {
     console.log("[MEMBERS_ID_PATCH]", error);
     throw new Error(`Failed to change role of user: ${error.message}`);
+  }
+}
+
+export async function kickUser({ serverId, memberId }: kickUserProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!serverId) {
+      throw new Error("Server ID missing");
+    }
+
+    if (!memberId) {
+      throw new Error("Member ID missing");
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+      data: {
+        members: {
+          deleteMany: {
+            id: memberId,
+            profileId: {
+              not: profile.id,
+            },
+          },
+        },
+      },
+      include: {
+        members: {
+          include: {
+            profile: true,
+          },
+          orderBy: {
+            role: "asc",
+          },
+        },
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log("[MEMBER_ID_DELETE]", error);
+    throw new Error(`Failed to kick user: ${error.message}`);
   }
 }

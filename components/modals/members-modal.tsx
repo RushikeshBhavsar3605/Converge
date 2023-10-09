@@ -37,7 +37,7 @@ import { MemberRole } from "@prisma/client";
 import qs from "query-string";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { changeRole } from "@/lib/actions/user.actions";
+import { changeRole, kickUser } from "@/lib/actions/user.actions";
 
 const roleIconMap = {
   GUEST: null,
@@ -57,17 +57,13 @@ export const MembersModal = () => {
     try {
       setLoadingId(memberId);
 
-      const url = qs.stringifyUrl({
-        url: `/api/members/${memberId}`,
-        query: {
-          serverId: server?.id,
-        },
+      const response = await kickUser({
+        serverId: server.id,
+        memberId: memberId,
       });
 
-      const response = await axios.delete(url);
-
       router.refresh();
-      onOpen("members", { server: response.data });
+      onOpen("members", { server: response });
     } catch (error) {
       console.log(error);
     } finally {
