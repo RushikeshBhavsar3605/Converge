@@ -16,6 +16,12 @@ interface editServerProps {
   serverId: string;
 }
 
+interface changeRoleProps {
+  memberId: string;
+  serverId: string;
+  role: MemberRole;
+}
+
 export async function createServer({ name, imageUrl }: createServerProps) {
   try {
     const profile = await currentProfile();
@@ -209,4 +215,63 @@ export async function addUserToServer({ inviteCode }: { inviteCode: string }) {
   });
 
   return server;
+}
+
+export async function changeRole({
+  memberId,
+  serverId,
+  role,
+}: changeRoleProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!serverId) {
+      throw new Error("Server ID missing");
+    }
+
+    if (!memberId) {
+      throw new Error("Member ID missing");
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        profileId: profile.id,
+      },
+      data: {
+        members: {
+          update: {
+            where: {
+              id: memberId,
+              profileId: {
+                not: profile.id,
+              },
+            },
+            data: {
+              role,
+            },
+          },
+        },
+      },
+      include: {
+        members: {
+          include: {
+            profile: true,
+          },
+          orderBy: {
+            role: "asc",
+          },
+        },
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log("[MEMBERS_ID_PATCH]", error);
+    throw new Error(`Failed to change role of user: ${error.message}`);
+  }
 }
