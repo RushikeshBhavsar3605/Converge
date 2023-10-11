@@ -33,6 +33,7 @@ import {
 import { ChannelType } from "@prisma/client";
 import qs from "query-string";
 import { useEffect } from "react";
+import { editChannel } from "@/lib/actions/user.actions";
 
 const formSchema = z.object({
   name: z
@@ -72,14 +73,12 @@ export const EditChannelModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const url = qs.stringifyUrl({
-        url: `/api/channels/${channel?.id}`,
-        query: {
-          serverId: server?.id,
-        },
+      await editChannel({
+        serverId: server?.id as string,
+        channelId: channel?.id as string,
+        name: values.name,
+        type: values.type,
       });
-
-      await axios.patch(url, values);
 
       form.reset();
       router.refresh();

@@ -1,6 +1,6 @@
 "use server";
 
-import { MemberRole } from "@prisma/client";
+import { ChannelType, MemberRole } from "@prisma/client";
 import { currentProfile } from "../current-profile";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../db";
@@ -25,6 +25,24 @@ interface changeRoleProps {
 interface kickUserProps {
   serverId: string;
   memberId: string;
+}
+
+interface createChannelProps {
+  serverId: string;
+  name: string;
+  type: ChannelType;
+}
+
+interface deleteChannelProps {
+  serverId: string;
+  channelId: string;
+}
+
+interface editChannelProps {
+  serverId: string;
+  channelId: string;
+  name: string;
+  type: ChannelType;
 }
 
 export async function createServer({ name, imageUrl }: createServerProps) {
@@ -328,5 +346,167 @@ export async function kickUser({ serverId, memberId }: kickUserProps) {
   } catch (error: any) {
     console.log("[MEMBER_ID_DELETE]", error);
     throw new Error(`Failed to kick user: ${error.message}`);
+  }
+}
+
+export async function createChannel({
+  serverId,
+  name,
+  type,
+}: createChannelProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!serverId) {
+      throw new Error("Server ID missing");
+    }
+
+    if (name === "general") {
+      throw new Error("Name cannot be 'general'");
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          create: {
+            profileId: profile.id,
+            name,
+            type,
+          },
+        },
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log("[CHANNELS_POST]", error);
+    throw new Error(`Failed to create channel: ${error.message}`);
+  }
+}
+
+export async function deleteChannel({
+  serverId,
+  channelId,
+}: deleteChannelProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!serverId) {
+      throw new Error("Server ID missing");
+    }
+
+    if (!channelId) {
+      throw new Error("Channel ID missing");
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          delete: {
+            id: channelId,
+            name: {
+              not: "general",
+            },
+          },
+        },
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log("[CHANNEL_ID_DELETE]", error);
+    throw new Error(`Failed to delete channel: ${error.message}`);
+  }
+}
+
+export async function editChannel({
+  serverId,
+  channelId,
+  name,
+  type,
+}: editChannelProps) {
+  try {
+    const profile = await currentProfile();
+
+    if (!profile) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!serverId) {
+      throw new Error("Server ID missing");
+    }
+
+    if (!channelId) {
+      throw new Error("Channel ID missing");
+    }
+
+    if (name === "general") {
+      throw new Error("Name cannot be 'general'");
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: serverId,
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          update: {
+            where: {
+              id: channelId,
+              NOT: {
+                name: "general",
+              },
+            },
+            data: {
+              name,
+              type,
+            },
+          },
+        },
+      },
+    });
+
+    return server;
+  } catch (error: any) {
+    console.log("[CHANNEL_ID_PATCH]", error);
+    throw new Error(`Failed to edit channel: ${error.message}`);
   }
 }
