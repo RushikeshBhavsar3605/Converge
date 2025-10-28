@@ -1,15 +1,12 @@
 # 🎮 Converge - Real-time Communication Platform
 
-A feature-rich Discord clone built with modern web technologies, offering real-time messaging, voice & video calls, and server management capabilities.
+Converge a feature-rich application inspired by Discord built with modern web technologies, offering real-time messaging, voice & video calls, and server management capabilities.
 
-![Next.js](https://img.shields.io/badge/Next.js-13-black)  
-![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue)  
-![MongoDB](https://img.shields.io/badge/MongoDB-Prisma-green)  
-![Socket.io](https://img.shields.io/badge/Socket.io-4.7-orange)
+![Next.js](https://img.shields.io/badge/Next.js-13-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue) ![MongoDB](https://img.shields.io/badge/MongoDB-Prisma-green) ![Socket.io](https://img.shields.io/badge/Socket.io-4.7-orange)
 
-## 📸 Live Project:
+## 🔗 Live Project:
 
-- ### [Live Project](https://converge.render.com/)
+- Explore the live version of the project here: [Live Project](https://converge.render.com/)
 
 ## ✨ Features
 
@@ -178,7 +175,11 @@ This application can be deployed on Vercel:
 
 Rushikesh Bhavsar
 
-- GitHub: @RushikeshBhavsar3605
+- GitHub: [@RushikeshBhavsar3605](https://github.com/RushikeshBhavsar3605)
+
+  <a href="https://github.com/RushikeshBhavsar3605">
+  <img src="https://avatars.githubusercontent.com/u/129877176?v=4" alt="GitHub Profile" style="width: 45px; height: 45px; border-radius: 50%;" />
+  </a>
 
 ## 🙏 Acknowledgments
 
