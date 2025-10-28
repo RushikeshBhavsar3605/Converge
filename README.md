@@ -156,10 +156,12 @@ Converge/
 
 ## 🚀 Deployment
 
-This application can be deployed on Vercel:
+This application cannot be deployed on Vercel as it uses `Socket.io`, which requires a persistent server, and Vercel is a serverless platform. However, you can deploy it on other platforms that support long-lived connections, such as Render or similar platforms.
+
+Here's how you can deploy on Render:
 
 1. Push your code to GitHub
-2. Import your repository in Vercel
+2. Import your repository in Render
 3. Add all environment variables
 4. Deploy!
 
