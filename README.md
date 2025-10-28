@@ -6,7 +6,7 @@ Converge a feature-rich application inspired by Discord built with modern web te
 
 ## 🔗 Live Project:
 
-- Explore the live version of the project here: [Live Project](https://converge.render.com/)
+- Explore the live version of the project here: [Live Project](https://converge-yara.onrender.com)
 
 ## ✨ Features
 
