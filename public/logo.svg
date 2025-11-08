@@ -1,0 +1,18 @@
+<svg width="120" height="120" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simplified gear -->
+  <circle cx="16" cy="16" r="14" fill="#60A5FA"/>
+  
+  <!-- Four main teeth only -->
+  <rect x="14" y="2" width="4" height="4" rx="1" fill="#60A5FA"/>
+  <rect x="14" y="26" width="4" height="4" rx="1" fill="#60A5FA"/>
+  <rect x="2" y="14" width="4" height="4" rx="1" fill="#60A5FA"/>
+  <rect x="26" y="14" width="4" height="4" rx="1" fill="#60A5FA"/>
+  
+  <!-- Inner circle -->
+  <circle cx="16" cy="16" r="9" fill="#3B82F6"/>
+  
+  <!-- Three dots (simplified) -->
+  <circle cx="11" cy="16" r="1.5" fill="#FFFFFF"/>
+  <circle cx="16" cy="16" r="1.5" fill="#FFFFFF"/>
+  <circle cx="21" cy="16" r="1.5" fill="#FFFFFF"/>
+</svg>
