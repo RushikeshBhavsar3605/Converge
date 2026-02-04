@@ -2,6 +2,8 @@
 
 A real-time communication platform focused on low-latency messaging, permission-aware channels, and scalable WebSocket-based systems.
 
+🔗 **Live Demo**: [https://converge-chat.onrender.com](https://converge-chat.onrender.com)
+
 ---
 
 ## What this project explores
@@ -20,32 +22,27 @@ The focus is on **backend behavior, data flow, and real-time guarantees**, not U
 ## Key Engineering Features
 
 - **Real-time Messaging System**
-
   - Socket.IO–based bi-directional communication
   - Ordered message delivery with edit/delete propagation
   - Cursor-based pagination for infinite scroll
   - Connection state tracking and automatic reconnection
 
 - **Server & Channel Authorization Model**
-
   - Hierarchical Server → Channel structure
   - Role-based permissions (Admin / Moderator / Guest)
   - Permission-aware message queries and event emission
 
 - **Direct Messaging Architecture**
-
   - Isolated one-to-one conversations
   - Separate persistence and socket namespaces from server channels
   - Independent pagination and access checks
 
 - **Voice & Video Communication**
-
   - LiveKit integration for real-time audio/video rooms
   - Token-based access control per channel
   - Ephemeral media sessions decoupled from message persistence
 
 - **File & Media Handling**
-
   - Secure file uploads with size/type validation
   - Message attachment previews and permission checks
 
